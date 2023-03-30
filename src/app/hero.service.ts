@@ -14,6 +14,10 @@ export class HeroService {
   // Web APIのURL
   private heroesUrl = 'api/heroes';
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
@@ -39,6 +43,14 @@ export class HeroService {
   /** HeroServiceのメッセージをMessageServiceを使って記録 */
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
+  }
+  /** PUT: サーバー上でヒーローを更新 */
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero,
+      this.httpOptions).pipe(
+        tap(_ => this.log(`updated hero id=${hero.id}`)),
+        catchError(this.handleError<any>(`updatedHero`))
+    );
   }
   /**
    * 失敗したHttp操作を処理します。
