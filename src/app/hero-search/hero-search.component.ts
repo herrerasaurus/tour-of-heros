@@ -25,7 +25,7 @@ export class HeroSearchComponent implements OnInit {
 
   ngOnInit(): void {
       this.heroes$ = this.searchTerms.pipe(
-        // 各キーストロークの後、検索前に300ms末
+        // 各キーストロークの後、検索前に300ms待つ
         debounceTime(300),
 
         // 直前の検索語と同じ場合は無視する
